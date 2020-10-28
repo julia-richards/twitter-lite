@@ -2,10 +2,33 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db/models');
 const { Tweet } = db;
+const { check, validationResult } = require('express-validator')
 
 const asyncHandler = (handler) => (req, res, next) =>
     handler(req, res, next).catch(next);
 
+  const handleValidationErrors = (req, res, next) => {
+    const validationErrors = validationResult(req);
+      if (!validationErrors.isEmpty()) {
+        const errors = validationErrors.array().map((error) => error.msg);
+
+        const err = Error("Bad request.");
+        err.errors = errors;
+        err.status = 400;
+        err.title = "Bad request.";
+        return next(err);
+      }
+      next();
+    };
+
+// const validateTweet = [
+//   check("message")
+//     .exists({ checkFalsy: true })
+//     .withMessage("message can't be empty"),
+//   check("message")
+//     .isLength({max: 280})
+//     .withMessage("message can't be longer than 280 characters")
+// ];
 
 router.get(
     "/",
@@ -21,9 +44,8 @@ const tweetNotFoundError = (id) => {
     err.title = "Tweet not found"
     err.status = 404;
     return (err);
-
-
 }
+
 router.get(
     "/:id(\\d+)",
     asyncHandler(async (req, res, next) => {
@@ -32,12 +54,21 @@ router.get(
         if(tweet){
             res.json({ tweet })
 
-
         } else {
-            next(taskNotFoundError(tweetId))
+            next(tweetNotFoundError(tweetId))
         }
 
     })
+)
+
+router.post('/',
+// validateTweet,
+handleValidationErrors,
+asyncHandler(async(req, res) =>{
+  const { message } = req.body;
+  const tweet = await Tweet.create({ message })
+  res.status(200).json({tweet})
+})
 )
 
 

@@ -18,7 +18,7 @@ app.use('/tweets', tweetsRouter);
 
 // Catch unhandled requests and forward to error handler.
 app.use((req, res, next) => {
-  const err = new Error("The requested resource couldn't be found.");
+  const err = Error("The requested resource couldn't be found.");
   err.status = 404;
   next(err);
 });
@@ -32,6 +32,7 @@ app.use((err, req, res, next) => {
   res.json({
     title: err.title || "Server Error",
     message: err.message,
+    errors: err.errors, // Includes our array of validation errors in our JSON response
     stack: isProduction ? null : err.stack,
   });
 });
