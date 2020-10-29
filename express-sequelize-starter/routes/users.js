@@ -1,9 +1,10 @@
 const express = require('express')
 const bcrypt = require('bcryptjs')
 const router = express.Router()
+const { check } = require('express-validator');
 const { asyncHandler, handleValidationErrors } = require('../utils');
 const { User } = require('../db/models')
-const check = require('express-validator');
+const { getUserToken }  = require('../auth')
 
 const validateUsername =
   check("username")
@@ -25,15 +26,20 @@ router.post('/',
 validateUsername,
 validateEmailAndPassword,
 handleValidationErrors,
-asyncHandler(async((req, res) => {
+asyncHandler(async (req, res) => {
  const { username, email, password } = req.body;
  const hashedPassword = await bcrypt.hash(password, 10);
 
  const user = await User.create({ username, email, hashedPassword });
 
+ const token = getUserToken(user);
+ res.status(201).json({
+   user: {id: user.id },
+   token
+ })
 
 }))
-)
+
 
 
 module.exports = router
