@@ -11,10 +11,11 @@ app.use(express.json());
 
 const indexRouter = require('./routes/index');
 const tweetsRouter = require('./routes/tweets');
-
+const usersRouter = require('./routes/users');
 
 app.use('/', indexRouter);
 app.use('/tweets', tweetsRouter);
+app.use('/users', usersRouter);
 
 app.set('view engine', 'pug')
 
