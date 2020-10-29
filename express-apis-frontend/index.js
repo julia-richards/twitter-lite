@@ -8,6 +8,10 @@ const app = express();
 app.set("view engine", "pug");
 app.use(express.static(path.join(__dirname, "public")));
 
+app.get('/sign-up', (req, res) => {
+  res.render('sign-up')
+})
+
 // Define a route.
 app.get("/", (req, res) => {
   res.render("index");
