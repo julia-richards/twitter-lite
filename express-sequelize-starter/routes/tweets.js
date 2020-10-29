@@ -5,19 +5,8 @@ const { Tweet } = db;
 const { check, validationResult } = require('express-validator')
 // const cors = require("cors");
 const { asyncHandler, handleValidationErrors } = require('../utils');
-
-// app.use(cors({origin: "http://localhost:4000"}))
-
-
-
-// const validateTweet = [
-//   check("message")
-//     .exists({ checkFalsy: true })
-//     .withMessage("message can't be empty"),
-//   check("message")
-//     .isLength({max: 280})
-//     .withMessage("message can't be longer than 280 characters")
-// ];
+const { requireAuth } = require("../auth");
+router.use(requireAuth)
 
 router.get(
     "/",

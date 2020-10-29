@@ -6,6 +6,7 @@ const { asyncHandler, handleValidationErrors } = require('../utils');
 const { User } = require('../db/models')
 const { getUserToken }  = require('../auth')
 
+
 const validateUsername =
   check("username")
     .exists({ checkFalsy: true })
