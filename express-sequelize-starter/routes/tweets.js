@@ -3,6 +3,10 @@ const router = express.Router();
 const db = require('../db/models');
 const { Tweet } = db;
 const { check, validationResult } = require('express-validator')
+// const cors = require("cors");
+
+
+// app.use(cors({origin: "http://localhost:4000"}))
 
 const asyncHandler = (handler) => (req, res, next) =>
     handler(req, res, next).catch(next);

@@ -1,9 +1,11 @@
 const express = require("express");
 const morgan = require("morgan");
 const { environment } = require('./config');
+const cors = require('cors')
 const app = express();
 
 
+app.use(cors({origin: "http://localhost:4000"}))
 app.use(morgan("dev"));
 app.use(express.json());
 
@@ -13,6 +15,8 @@ const tweetsRouter = require('./routes/tweets');
 
 app.use('/', indexRouter);
 app.use('/tweets', tweetsRouter);
+
+app.set('view engine', 'pug')
 
 
 
