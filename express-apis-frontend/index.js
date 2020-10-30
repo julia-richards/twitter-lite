@@ -12,6 +12,10 @@ app.get('/sign-up', (req, res) => {
   res.render('sign-up')
 })
 
+app.get("/log-in", (req, res) => {
+  res.render("log-in");
+});
+
 // Define a route.
 app.get("/", (req, res) => {
   res.render("index");
